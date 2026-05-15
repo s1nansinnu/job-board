@@ -10,7 +10,7 @@ A full-stack web application where employers can post job listings, candidates c
 | **Styling** | CSS Modules + CSS Custom Properties |
 | **Backend** | FastAPI (Python) |
 | **Database** | SQLite (Python built-in `sqlite3`) |
-| **Auth** | JWT (python-jose + passlib) |
+| **Auth** | JWT  |
 | **Email** | fastapi-mail |
 
 ## ✨ Features
@@ -71,7 +71,6 @@ The frontend will start at `http://localhost:3000`.
 Copy `backend/.env.example` to `backend/.env` and configure:
 
 ```env
-SECRET_KEY=your-secret-key
 FRONTEND_URL=http://localhost:3000
 
 # SMTP (optional, for email notifications)
