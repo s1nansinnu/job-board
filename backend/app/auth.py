@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 from .config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_HOURS
 from .database import get_db, dict_from_row
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto",bcrypt__rounds=12, truncate_error=False)
 security = HTTPBearer()
 
 
