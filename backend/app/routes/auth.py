@@ -21,20 +21,28 @@ def register(data: RegisterRequest):
     if existing:
         db.close()
         raise HTTPException(status_code=400, detail="Email already registered")
-
-    hashed = hash_password(data.password)
-    cursor = db.execute(
-        """INSERT INTO users (name, email, password_hash, role, company)
+    try:
+        hashed = hash_password(data.password)
+        cursor = db.execute(
+            """INSERT INTO users (name, email, password_hash, role, company)
            VALUES (?, ?, ?, ?, ?)""",
-        (data.name, data.email, hashed, data.role, data.company or "")
-    )
-    db.commit()
-    user_id = cursor.lastrowid
+            (data.name, data.email, hashed, data.role, data.company or "")
+        )
+        db.commit()
+        user_id = cursor.lastrowid
 
-    # Fetch created user
-    user_row = db.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+        # Fetch created user
+        user_row = db.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+    except ValueError as e:    
+        db.close()
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    except Exception as e:
+        db.close()
+        print("Register error:", str(e))
+        raise HTTPException(status_code=500, detail="Registration failed on server")    
     db.close()
-
+    
     user = dict_from_row(user_row)
     user.pop("password_hash", None)
     user.pop("resume_data", None)

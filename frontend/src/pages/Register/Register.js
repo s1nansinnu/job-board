@@ -22,6 +22,10 @@ export default function Register() {
     setError('');
     if (password !== confirm) { setError('Passwords do not match'); return; }
     if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
+    if (new TextEncoder().encode(password).length > 72) {
+      setError('Password is too long. Use a shorter password.');
+      return;}
+      
     if (role === 'employer' && !company.trim()) { setError('Company name is required for employers'); return; }
     setLoading(true);
     try {
